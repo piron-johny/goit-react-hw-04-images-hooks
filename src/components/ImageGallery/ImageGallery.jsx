@@ -1,48 +1,42 @@
-import { Component } from 'react';
-import Modal from '../Modal';
+import { useState } from 'react';
+import Button from '../Button';
 import ImageList from '../ImageList';
 import Loader from '../Loader';
-import Button from '../Button';
+import Modal from '../Modal';
 
-class ImageGallery extends Component {
-  state = {
-    largeImg: '',
-    isModal: false,
-  };
+const ImageGallery = ({ images, onLoadMore, loader }) => {
+  const [largeImg, setLargeImg] = useState('');
+  const [isModal, setIsModal] = useState(false);
 
-  onOpenModal = e => {
+  const onOpenModal = e => {
     const { source } = e.target.dataset;
-    this.setState({ largeImg: source, isModal: true });
+    setLargeImg(source);
+    setIsModal(true)
   };
 
-  onCloseModal = () => {
-    this.setState({ isModal: false, largeImg: '' });
+  const onCloseModal = () => {
+    setLargeImg('');
+    setIsModal(false)
   };
 
-  // --------------------------------render------------------------
+  if (!!images.length) {
+    return (
+      <>
+        <Modal
+          isModal={isModal}
+          onCloseModal={onCloseModal}
+          largeImg={largeImg}
+        />
 
-  render() {
-    const { isModal, largeImg } = this.state;
-    const { images, onLoadMore, loader } = this.props;
+        <ImageList images={images} onOpenModal={onOpenModal} />
 
-    if (!!images.length) {
-      return (
-        <>
-          <Modal
-            isModal={isModal}
-            onCloseModal={this.onCloseModal}
-            largeImg={largeImg}
-          />
-
-          <ImageList images={images} onOpenModal={this.onOpenModal} />
-
-          {loader ? <Loader /> : <Button onLoadMore={onLoadMore} />}
-        </>
-      );
-    }
-
-    return null;
+        {loader ? <Loader /> : <Button onLoadMore={onLoadMore} />}
+      </>
+    );
   }
+
+  return null;
 }
 
 export default ImageGallery;
+
