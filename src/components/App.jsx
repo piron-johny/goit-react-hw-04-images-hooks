@@ -14,8 +14,9 @@ const App = () => {
     const fetchData = async () => {
       if (isPending) {
         try {
+          setIsPending(true)
           const fetchImages = await fetchMoviesWithQuery(searchValue, page);
-          setImages(page > 1 ? [...images, ...fetchImages] : fetchImages);
+          setImages(prev => page > 1 ? [...prev, ...fetchImages] : fetchImages);
           setLoader(false);
           setIsPending(false);
 
