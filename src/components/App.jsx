@@ -3,7 +3,6 @@ import { fetchMoviesWithQuery } from 'services/api';
 import ImageGallery from './ImageGallery';
 import SearchBar from './SearchBar';
 
-
 const App = () => {
   const [searchValue, setSearchValue] = useState('');
   const [isPending, setIsPending] = useState(false);
